@@ -1,0 +1,53 @@
+With code_list as (
+
+ Select clg_mcc_ref,  group_concat(distinct substring(value, length(country_code) +1 , if(country_code = '1',3,2)), ',') as country_prefix_list from(
+
+select clg_mcc_ref, cast(clg_num as string) as value, country_code from data_cdr cdr left join sys_country_profile ctry on cdr.clg_mcc_ref = ctry.mcc_ref where service_type = 301 and status = '10001f' and par_month = 202506 and par_bound_type = 1 and left(cast (clg_num as string),  length(country_code)) = country_code 
+
+UNION ALL 
+
+select clg_mcc_ref, substring(cld_num, 3) as value, country_code from data_cdr cdr left join sys_country_profile ctry on cdr.clg_mcc_ref = ctry.mcc_ref where service_type = 301 and status = '10001f' and par_month = 202506 and par_bound_type = 1 and  cld_num like concat(’00’, country_code , ‘%’) and length(cast(clg_num as string)) = length(substring(cld_num, 3)) 
+
+) tbl group by clg_mcc_ref
+
+)
+
+select cld_mcc_ref, cld_num, country_code from data_cdr cdr left join sys_country_profile ctry on ctry.mcc_ref = cdr.clg_mcc_ref left join code_list cd on cdr.clg_mcc_ref = cd.clg_mcc_ref 
+
+where 
+
+par_month = 202506 and service_type = 301 and par_bound_type = 1 and status = '10001f' 
+
+and ( 
+
+(
+
+cld_num like concat('00', country_code , '%') and left(cast(cld_num as string) , length(country_code) ) = country_code
+
+)
+
+or 
+
+(left(cast(cld_num as string) , length(country_code) ) = country_code)
+
+or 
+
+(
+
+cld_num like concat('00', country_code , '%') and length(substring(cast(clg_num as string), length(country_code)+1 )) = length(cld_num) 
+
+and FIND_IN_SET(LEFT(CAST(cld_num AS STRING), if(country_code = '1',3,2)), country_prefix_list) > 0 
+
+) 
+
+or 
+
+(
+
+length(substring(cast(clg_num as string), length(country_code)+1 )) = length(cld_num) 
+
+and FIND_IN_SET(LEFT(CAST(cld_num AS STRING), if(country_code = '1',3,2)), country_prefix_list) > 0 
+
+) 
+
+) ;
