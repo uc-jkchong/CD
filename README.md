@@ -1,5 +1,6 @@
 # CD
 Level 1:
+
 recv call in	
 - fail before translation process (status != '10001f' and LENGTH(status) < 8 and status != '0')
 - after translation process 
@@ -10,7 +11,8 @@ recv call in
 need to break down further by country / categories A,b,c after one lump sum summary?
 
  Level 2:
-build the above in table form, by adding below category A,B,C as first column, and regex proposal as last
+ 
+ build the above in table form, by adding below category A,B,C as first column, and regex proposal as last
 	CASE 
 		WHEN regexp_like(cld_num, '^(?:0(11)\\d{8}|01[(02-9)]\\d{7}|03\\d{8}|0([4-9])\\d{7})$') = TRUE THEN 1 -- domestic malaysian number 
 		WHEN regexp_like(cld_num, '^(?:\\+?60)(?:(11)\\d{8}|1[(02-9)]\\d{7}|3\\d{8}|[(4-9)]\\d{7})$') = TRUE THEN 2 -- international malaysian number 
@@ -21,4 +23,5 @@ build the above in table form, by adding below category A,B,C as first column, a
 
 
  Level 3:
-Detailed CDR of the above selected category..
+ 
+ Detailed CDR of the above selected category..
