@@ -6,7 +6,7 @@ select clg_mcc_ref, cast(clg_num as string) as value, country_code from data_cdr
 
 UNION ALL 
 
-select clg_mcc_ref, substring(cld_num, 3) as value, country_code from data_cdr cdr left join sys_country_profile ctry on cdr.clg_mcc_ref = ctry.mcc_ref where service_type = 301 and status = '10001f' and par_month = 202506 and par_bound_type = 1 and  cld_num like concat(’00’, country_code , ‘%’) and length(cast(clg_num as string)) = length(substring(cld_num, 3)) 
+select clg_mcc_ref, substring(cld_num, 3) as value, country_code from data_cdr cdr left join sys_country_profile ctry on cdr.clg_mcc_ref = ctry.mcc_ref where service_type = 301 and status = '10001f' and par_month = 202506 and par_bound_type = 1 and  cld_num like concat('00', country_code , '%') and length(cast(clg_num as string)) = length(substring(cld_num, 3)) 
 
 ) tbl group by clg_mcc_ref
 
