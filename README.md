@@ -1,4 +1,4 @@
-# RVS
+# CD
 Level 1:
 recv call in	
 - fail before translation process (status != '10001f' AND status < '10100100') 
