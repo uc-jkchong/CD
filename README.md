@@ -2,7 +2,7 @@
 Level 1:
 
 recv call in	
-- fail before translation process (status != '10001f' and LENGTH(status) < 8 and status != '0')
+- fail before translation process (status != '10001f' and status != '10001e' and LENGTH(status) < 8 and status != '0')
 - after translation process 
 	- cld_ACM > 0 / = 0 
 		- Translated / Not Translated (status = '10001f')
